@@ -22,16 +22,16 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.commons.beanutils.DynaBean;
+import org.apache.commons.beanutils.DynaProperty;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+
 import net.sf.excelutils.ExcelParser;
 import net.sf.excelutils.ExcelUtils;
 import net.sf.excelutils.WorkbookUtils;
-
-import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.beanutils.DynaProperty;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.util.Region;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ public class EachTag implements ITag {
 
   public static final String KEY_EACH = "#each";
 
-  public int[] parseTag(Object context, HSSFSheet sheet, HSSFRow curRow, HSSFCell curCell) {
+  public int[] parseTag(Object context, Sheet sheet, Row curRow, Cell curCell) {
     String expr = "";
     String each = curCell.getStringCellValue();
     StringTokenizer st = new StringTokenizer(each, " ");
@@ -107,7 +107,7 @@ public class EachTag implements ITag {
 
     int index = 0;
     int arrayIndex = 0;
-    int eachPos = curCell.getCellNum();
+    int eachPos = curCell.getColumnIndex();
     String modelName = expr.substring(ExcelParser.VALUED_DELIM.length(), expr.length()
         - ExcelParser.VALUED_DELIM2.length());
 
@@ -150,39 +150,39 @@ public class EachTag implements ITag {
         // get row merged of the curCell
         int rowMerged = 1;
         for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
-          Region r = sheet.getMergedRegionAt(i);
-          if (r.getRowFrom() == curRow.getRowNum() && r.getColumnFrom() == curCell.getCellNum()
-              && r.getColumnTo() == curCell.getCellNum()) {
-            rowMerged = r.getRowTo() - r.getRowFrom() + 1;
+          CellRangeAddress r = sheet.getMergedRegion(i);
+          if (r.getFirstRow() == curRow.getRowNum() && r.getFirstColumn() == curCell.getColumnIndex()
+              && r.getLastColumn() == curCell.getColumnIndex()) {
+            rowMerged = r.getLastRow() - r.getFirstRow() + 1;
             break;
           }
         }
 
-        HSSFCell cell = WorkbookUtils.getCell(curRow, eachPos);
+        Cell cell = WorkbookUtils.getCell(curRow, eachPos);
 
         // shift the after cell
         if (index > 0) {
           WorkbookUtils.shiftCell(sheet, curRow, cell, 1, rowMerged);
         }
         if (width > 1) {
-          HSSFCell nextCell = WorkbookUtils.getCell(curRow, eachPos + 1);
+          Cell nextCell = WorkbookUtils.getCell(curRow, eachPos + 1);
           WorkbookUtils.shiftCell(sheet, curRow, nextCell, width - 1, rowMerged);
         }
 
         // copy the style of curCell
         for (int rownum = curRow.getRowNum(); rownum < curRow.getRowNum() + rowMerged; rownum++) {
           for (int i = 0; i < width; i++) {
-            HSSFRow r = WorkbookUtils.getRow(rownum, sheet);
-            HSSFCell c = WorkbookUtils.getCell(r, eachPos + i);
-            HSSFCell cc = WorkbookUtils.getCell(r, curCell.getCellNum());
+            Row r = WorkbookUtils.getRow(rownum, sheet);
+            Cell c = WorkbookUtils.getCell(r, eachPos + i);
+            Cell cc = WorkbookUtils.getCell(r, curCell.getColumnIndex());
             c.setCellStyle(cc.getCellStyle());
           }
         }
 
         // merge cells
         if (width > 1 || rowMerged > 1) {
-          sheet.addMergedRegion(new Region(curRow.getRowNum(), cell.getCellNum(), curRow.getRowNum() + rowMerged - 1,
-              (short) (cell.getCellNum() + width - 1)));
+          sheet.addMergedRegion(new CellRangeAddress(curRow.getRowNum(), cell.getColumnIndex(), curRow.getRowNum() + rowMerged - 1,
+              (short) (cell.getColumnIndex() + width - 1)));
         }
 
         cell.setCellValue("${" + property + "}");

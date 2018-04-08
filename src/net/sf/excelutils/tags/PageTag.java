@@ -16,9 +16,9 @@
  */
 package net.sf.excelutils.tags;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 
 /**
@@ -33,7 +33,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 public class PageTag implements ITag {
   public static final String KEY_PAGE = "#page";
 
-  public int[] parseTag(Object context, HSSFSheet sheet, HSSFRow curRow, HSSFCell curCell) {  	
+  public int[] parseTag(Object context, Sheet sheet, Row curRow, Cell curCell) {  	
   	sheet.setRowBreak(curRow.getRowNum());
   	curCell.setCellValue("");
   	return new int[] { 0, 0, 0 };

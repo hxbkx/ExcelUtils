@@ -20,9 +20,10 @@ package net.sf.excelutils.tags;
 import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
 import net.sf.excelutils.ExcelParser;
 import net.sf.excelutils.ExcelUtils;
 
@@ -37,7 +38,7 @@ public class CallTag implements ITag {
   
   public static final String KEY_CALL = "#call";
 
-  public int[] parseTag(Object context, HSSFSheet sheet, HSSFRow curRow, HSSFCell curCell) {
+  public int[] parseTag(Object context, Sheet sheet, Row curRow, Cell curCell){
 
     String cellstr = curCell.getStringCellValue();
     if (null == cellstr || "".equals(cellstr)) {

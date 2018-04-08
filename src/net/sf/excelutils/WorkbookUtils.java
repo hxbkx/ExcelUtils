@@ -27,12 +27,13 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.Region;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * <p>
@@ -53,15 +54,15 @@ public class WorkbookUtils {
 	 * @param ctx ServletContext
 	 * @param config Excel Template Name
 	 * @throws ExcelException
-	 * @return HSSFWorkbook
+	 * @return Workbook
 	 */
-	public static HSSFWorkbook openWorkbook(ServletContext ctx, String config) throws ExcelException {
+	public static Workbook openWorkbook(ServletContext ctx, String config) throws ExcelException {
 
 		InputStream in = null;
-		HSSFWorkbook wb = null;
+		Workbook wb = null;
 		try {
 			in = ctx.getResourceAsStream(config);
-			wb = new HSSFWorkbook(in);
+			wb = new XSSFWorkbook(in);
 		} catch (Exception e) {
 			throw new ExcelException("File" + config + "not found," + e.getMessage());
 		} finally {
@@ -76,15 +77,15 @@ public class WorkbookUtils {
 	/**
 	 * Open an excel file by real fileName
 	 * @param fileName
-	 * @return HSSFWorkbook
+	 * @return Workbook
 	 * @throws ExcelException
 	 */
-	public static HSSFWorkbook openWorkbook(String fileName) throws ExcelException {
+	public static Workbook openWorkbook(String fileName) throws ExcelException {
 		InputStream in = null;
-		HSSFWorkbook wb = null;
+		Workbook wb = null;
 		try {
 			in = new FileInputStream(fileName);
-			wb = new HSSFWorkbook(in);
+			wb = new XSSFWorkbook(in);
 		} catch (Exception e) {
 			throw new ExcelException("File" + fileName + "not found" + e.getMessage());
 		} finally {
@@ -99,13 +100,13 @@ public class WorkbookUtils {
 	/**
 	 * Open an excel from InputStream
 	 * @param in
-	 * @return¡¡HSSFWorkbook
+	 * @returnï¿½ï¿½Workbook
 	 * @throws ExcelException
 	 */
-	public static HSSFWorkbook openWorkbook(InputStream in) throws ExcelException {
-		HSSFWorkbook wb = null;
+	public static Workbook openWorkbook(InputStream in) throws ExcelException {
+		Workbook wb = null;
 		try {
-			wb = new HSSFWorkbook(in);
+			wb = new XSSFWorkbook(in);
 		} catch (Exception e) {
 			throw new ExcelException(e.getMessage());
 		}
@@ -115,11 +116,11 @@ public class WorkbookUtils {
 	/**
 	 * Save the Excel to OutputStream
 	 * 
-	 * @param wb HSSFWorkbook
+	 * @param wb Workbook
 	 * @param out OutputStream
 	 * @throws ExcelException
 	 */
-	public static void SaveWorkbook(HSSFWorkbook wb, OutputStream out) throws ExcelException {
+	public static void SaveWorkbook(Workbook wb, OutputStream out) throws ExcelException {
 		try {
 			wb.write(out);
 		} catch (Exception e) {
@@ -130,117 +131,113 @@ public class WorkbookUtils {
 	/**
 	 * Set value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @param value String
 	 */
-	public static void setCellValue(HSSFSheet sheet, int rowNum, int colNum, String value) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
-		cell.setEncoding(HSSFWorkbook.ENCODING_UTF_16);
+	public static void setCellValue(Sheet sheet, int rowNum, int colNum, String value) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		cell.setCellValue(value);
 	}
 
 	/**
 	 * get value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @return String
 	 */
-	public static String getStringCellValue(HSSFSheet sheet, int rowNum, int colNum) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static String getStringCellValue(Sheet sheet, int rowNum, int colNum) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		return cell.getStringCellValue();
 	}
 
 	/**
 	 * set value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @param value String
 	 * @param encoding short
 	 */
-	public static void setCellValue(HSSFSheet sheet, int rowNum, int colNum, String value, short encoding) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
-		if (encoding >= 0) {
-			cell.setEncoding(encoding);
-		}
+	public static void setCellValue(Sheet sheet, int rowNum, int colNum, String value, short encoding) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		cell.setCellValue(value);
 	}
 
 	/**
 	 * set value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @param value double
 	 */
-	public static void setCellValue(HSSFSheet sheet, int rowNum, int colNum, double value) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static void setCellValue(Sheet sheet, int rowNum, int colNum, double value) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		cell.setCellValue(value);
 	}
 
 	/**
 	 * get value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @return double
 	 */
-	public static double getNumericCellValue(HSSFSheet sheet, int rowNum, int colNum) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static double getNumericCellValue(Sheet sheet, int rowNum, int colNum) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		return cell.getNumericCellValue();
 	}
 
 	/**
 	 * set value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @param value Date
 	 */
-	public static void setCellValue(HSSFSheet sheet, int rowNum, int colNum, Date value) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static void setCellValue(Sheet sheet, int rowNum, int colNum, Date value) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		cell.setCellValue(value);
 	}
 
 	/**
 	 * get value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @return Date
 	 */
-	public static Date getDateCellValue(HSSFSheet sheet, int rowNum, int colNum) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static Date getDateCellValue(Sheet sheet, int rowNum, int colNum) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		return cell.getDateCellValue();
 	}
 
 	/**
 	 * set value of the cell
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
 	 * @param value boolean
 	 */
-	public static void setCellValue(HSSFSheet sheet, int rowNum, int colNum, boolean value) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static void setCellValue(Sheet sheet, int rowNum, int colNum, boolean value) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		cell.setCellValue(value);
 	}
 
@@ -252,9 +249,9 @@ public class WorkbookUtils {
 	 * @param colNum
 	 * @return boolean value
 	 */
-	public static boolean getBooleanCellValue(HSSFSheet sheet, int rowNum, int colNum) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static boolean getBooleanCellValue(Sheet sheet, int rowNum, int colNum) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		return cell.getBooleanCellValue();
 	}
 
@@ -262,11 +259,11 @@ public class WorkbookUtils {
 	 * get Row, if not exists, create
 	 * 
 	 * @param rowCounter int
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @return HSSFRow
 	 */
-	public static HSSFRow getRow(int rowCounter, HSSFSheet sheet) {
-		HSSFRow row = sheet.getRow((short) rowCounter);
+	public static Row getRow(int rowCounter, Sheet sheet) {
+		Row row = sheet.getRow((short) rowCounter);
 		if (row == null) {
 			row = sheet.createRow((short) rowCounter);
 		}
@@ -278,10 +275,10 @@ public class WorkbookUtils {
 	 * 
 	 * @param row HSSFRow
 	 * @param column int
-	 * @return HSSFCell
+	 * @return Cell
 	 */
-	public static HSSFCell getCell(HSSFRow row, int column) {
-		HSSFCell cell = row.getCell((short) column);
+	public static Cell getCell(Row row, int column) {
+		Cell cell = row.getCell((short) column);
 
 		if (cell == null) {
 			cell = row.createCell((short) column);
@@ -292,14 +289,14 @@ public class WorkbookUtils {
 	/**
 	 * get cell, if not exists, create
 	 * 
-	 * @param sheet HSSFSheet
+	 * @param sheet Sheet
 	 * @param rowNum int
 	 * @param colNum int
-	 * @return HSSFCell
+	 * @return Cell
 	 */
-	public static HSSFCell getCell(HSSFSheet sheet, int rowNum, int colNum) {
-		HSSFRow row = getRow(rowNum, sheet);
-		HSSFCell cell = getCell(row, colNum);
+	public static Cell getCell(Sheet sheet, int rowNum, int colNum) {
+		Row row = getRow(rowNum, sheet);
+		Cell cell = getCell(row, colNum);
 		return cell;
 	}
 
@@ -311,32 +308,31 @@ public class WorkbookUtils {
 	 * @param to destination fo the row
 	 * @param count count of copy
 	 */
-	public static void copyRow(HSSFSheet sheet, int from, int to, int count) {
+	public static void copyRow(Sheet sheet, int from, int to, int count) {
 
 		for (int rownum = from; rownum < from + count; rownum++) {
-			HSSFRow fromRow = sheet.getRow(rownum);
-			HSSFRow toRow = getRow(to + rownum - from, sheet);
+			Row fromRow = sheet.getRow(rownum);
+			Row toRow = getRow(to + rownum - from, sheet);
 			if (null == fromRow)
 				return;
 			toRow.setHeight(fromRow.getHeight());
 			toRow.setHeightInPoints(fromRow.getHeightInPoints());
 			for (int i = fromRow.getFirstCellNum(); i <= fromRow.getLastCellNum() && i >= 0; i++) {
-				HSSFCell fromCell = getCell(fromRow, i);
-				HSSFCell toCell = getCell(toRow, i);
-				toCell.setEncoding(fromCell.getEncoding());
+				Cell fromCell = getCell(fromRow, i);
+				Cell toCell = getCell(toRow, i);
 				toCell.setCellStyle(fromCell.getCellStyle());
 				toCell.setCellType(fromCell.getCellType());
 				switch (fromCell.getCellType()) {
-				case HSSFCell.CELL_TYPE_BOOLEAN:
+				case Cell.CELL_TYPE_BOOLEAN:
 					toCell.setCellValue(fromCell.getBooleanCellValue());
 					break;
-				case HSSFCell.CELL_TYPE_FORMULA:
+				case Cell.CELL_TYPE_FORMULA:
 					toCell.setCellFormula(fromCell.getCellFormula());
 					break;
-				case HSSFCell.CELL_TYPE_NUMERIC:
+				case Cell.CELL_TYPE_NUMERIC:
 					toCell.setCellValue(fromCell.getNumericCellValue());
 					break;
-				case HSSFCell.CELL_TYPE_STRING:
+				case Cell.CELL_TYPE_STRING:
 					toCell.setCellValue(fromCell.getStringCellValue());
 					break;
 				default:
@@ -347,13 +343,9 @@ public class WorkbookUtils {
 		// copy merged region
 		List shiftedRegions = new ArrayList();
 		for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
-			Region r = sheet.getMergedRegionAt(i);
-			if (r.getRowFrom() >= from && r.getRowTo() < from + count) {
-				Region n_r = new Region();
-				n_r.setRowFrom(r.getRowFrom() + to - from);
-				n_r.setRowTo(r.getRowTo() + to - from);
-				n_r.setColumnFrom(r.getColumnFrom());
-				n_r.setColumnTo(r.getColumnTo());
+			CellRangeAddress r = sheet.getMergedRegion(i);
+			if (r.getFirstRow() >= from && r.getLastRow() < from + count) {
+			    CellRangeAddress n_r = new CellRangeAddress(r.getFirstRow() + to - from,r.getLastRow() + to - from,r.getFirstColumn(),r.getLastColumn());
 				shiftedRegions.add(n_r);				
 			}
 		}
@@ -361,12 +353,12 @@ public class WorkbookUtils {
 		// readd so it doesn't get shifted again
 		Iterator iterator = shiftedRegions.iterator();
 		while (iterator.hasNext()) {
-			Region region = (Region) iterator.next();
+		    CellRangeAddress region = (CellRangeAddress) iterator.next();
 			sheet.addMergedRegion(region);
 		}		
 	}
 
-	public static void shiftCell(HSSFSheet sheet, HSSFRow row, HSSFCell beginCell, int shift, int rowCount) {
+	public static void shiftCell(Sheet sheet, Row row, Cell beginCell, int shift, int rowCount) {
 
 		if (shift == 0)
 			return;
@@ -375,59 +367,59 @@ public class WorkbookUtils {
 		int fromRow = row.getRowNum();
 		int toRow = row.getRowNum()+rowCount-1;
 		for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
-			Region r = sheet.getMergedRegionAt(i);
-			if (r.getRowFrom() == row.getRowNum()) {
-				if (r.getRowTo() > toRow) {
-					toRow = r.getRowTo();
+		    CellRangeAddress r = sheet.getMergedRegion(i);
+			if (r.getFirstRow() == row.getRowNum()) {
+				if (r.getLastRow() > toRow) {
+					toRow = r.getLastRow();
 				}
-				if (r.getRowFrom() < fromRow) {
-					fromRow = r.getRowFrom();
+				if (r.getFirstRow() < fromRow) {
+					fromRow = r.getFirstRow();
 				}
 			}
 		}
 
 		for (int rownum = fromRow; rownum <= toRow; rownum++) {
-			HSSFRow curRow = WorkbookUtils.getRow(rownum, sheet);
+			Row curRow = WorkbookUtils.getRow(rownum, sheet);
 			int lastCellNum = curRow.getLastCellNum();		
-			for (int cellpos = lastCellNum; cellpos >= beginCell.getCellNum(); cellpos--) {
-				HSSFCell fromCell = WorkbookUtils.getCell(curRow, cellpos);
-				HSSFCell toCell = WorkbookUtils.getCell(curRow, cellpos + shift);
+			for (int cellpos = lastCellNum; cellpos >= beginCell.getColumnIndex(); cellpos--) {
+				Cell fromCell = WorkbookUtils.getCell(curRow, cellpos);
+				Cell toCell = WorkbookUtils.getCell(curRow, cellpos + shift);
 				toCell.setCellType(fromCell.getCellType());
 				toCell.setCellStyle(fromCell.getCellStyle());
 				switch (fromCell.getCellType()) {
-				case HSSFCell.CELL_TYPE_BOOLEAN:
+				case Cell.CELL_TYPE_BOOLEAN:
 					toCell.setCellValue(fromCell.getBooleanCellValue());
 					break;
-				case HSSFCell.CELL_TYPE_FORMULA:
+				case Cell.CELL_TYPE_FORMULA:
 					toCell.setCellFormula(fromCell.getCellFormula());
 					break;
-				case HSSFCell.CELL_TYPE_NUMERIC:
+				case Cell.CELL_TYPE_NUMERIC:
 					toCell.setCellValue(fromCell.getNumericCellValue());
 					break;
-				case HSSFCell.CELL_TYPE_STRING:
+				case Cell.CELL_TYPE_STRING:
 					toCell.setCellValue(fromCell.getStringCellValue());
 					break;
-				case HSSFCell.CELL_TYPE_ERROR:
+				case Cell.CELL_TYPE_ERROR:
 					toCell.setCellErrorValue(fromCell.getErrorCellValue());
 					break;
 				}
 				fromCell.setCellValue("");
-				fromCell.setCellType(HSSFCell.CELL_TYPE_BLANK);
-				HSSFWorkbook wb = new HSSFWorkbook();
-				HSSFCellStyle style = wb.createCellStyle();
+				fromCell.setCellType(Cell.CELL_TYPE_BLANK);
+				Workbook wb = new XSSFWorkbook();
+				CellStyle style = wb.createCellStyle();
 				fromCell.setCellStyle(style);
 			}
 			
 			// process merged region
-			for (int cellpos = lastCellNum; cellpos >= beginCell.getCellNum(); cellpos--) {
-				HSSFCell fromCell = WorkbookUtils.getCell(curRow, cellpos);
+			for (int cellpos = lastCellNum; cellpos >= beginCell.getColumnIndex(); cellpos--) {
+				Cell fromCell = WorkbookUtils.getCell(curRow, cellpos);
 				
 				List shiftedRegions = new ArrayList();
 				for (int i=0; i<sheet.getNumMergedRegions(); i++) {
-					Region r = sheet.getMergedRegionAt(i);
-					if (r.getRowFrom()==curRow.getRowNum() && r.getColumnFrom() == fromCell.getCellNum()) {
-						r.setColumnFrom((short) (r.getColumnFrom() + shift));
-						r.setColumnTo((short) (r.getColumnTo() + shift));
+				    CellRangeAddress r = sheet.getMergedRegion(i);
+					if (r.getFirstRow()==curRow.getRowNum() && r.getFirstColumn() == fromCell.getColumnIndex()) {
+						r.setFirstColumn((short) (r.getFirstColumn() + shift));
+						r.setLastColumn((short) (r.getLastColumn() + shift));
 						// have to remove/add it back
 						shiftedRegions.add(r);
 						sheet.removeMergedRegion(i);
@@ -439,7 +431,7 @@ public class WorkbookUtils {
 				// readd so it doesn't get shifted again
 				Iterator iterator = shiftedRegions.iterator();
 				while (iterator.hasNext()) {
-					Region region = (Region) iterator.next();
+				    CellRangeAddress region = (CellRangeAddress) iterator.next();
 					sheet.addMergedRegion(region);
 				}					
 			}			

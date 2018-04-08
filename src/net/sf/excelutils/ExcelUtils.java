@@ -25,8 +25,9 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.LazyDynaBean;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 
 /**
  * <p>
@@ -54,7 +55,7 @@ public class ExcelUtils {
    */
   public static void export(ServletContext ctx, String config, Object context, OutputStream out) throws ExcelException {
     try {
-      HSSFWorkbook wb = WorkbookUtils.openWorkbook(ctx, config);
+      Workbook wb = WorkbookUtils.openWorkbook(ctx, config);
       parseWorkbook(context, wb);
       wb.write(out);
     } catch (Exception e) {
@@ -75,7 +76,7 @@ public class ExcelUtils {
   public static void export(ServletContext ctx, String config, int sheetIndex, Object context, OutputStream out)
       throws ExcelException {
     try {
-      HSSFWorkbook wb = WorkbookUtils.openWorkbook(ctx, config);
+      Workbook wb = WorkbookUtils.openWorkbook(ctx, config);
       parseWorkbook(context, wb, sheetIndex);
       wb.write(out);
     } catch (Exception e) {
@@ -128,7 +129,7 @@ public class ExcelUtils {
    */
   public static void export(String fileName, Object context, OutputStream out) throws ExcelException {
     try {
-      HSSFWorkbook wb = WorkbookUtils.openWorkbook(fileName);
+      Workbook wb = WorkbookUtils.openWorkbook(fileName);
       parseWorkbook(context, wb);
       wb.write(out);
     } catch (Exception e) {
@@ -146,7 +147,7 @@ public class ExcelUtils {
    */
   public static void export(String fileName, int sheetIndex, Object context, OutputStream out) throws ExcelException {
     try {
-      HSSFWorkbook wb = WorkbookUtils.openWorkbook(fileName);
+      Workbook wb = WorkbookUtils.openWorkbook(fileName);
       parseWorkbook(context, wb, sheetIndex);
       wb.write(out);
     } catch (Exception e) {
@@ -193,7 +194,7 @@ public class ExcelUtils {
    */
   public static void export(InputStream inputStream, Object context, OutputStream out) throws ExcelException {
     try {
-      HSSFWorkbook wb = WorkbookUtils.openWorkbook(inputStream);
+      Workbook wb = WorkbookUtils.openWorkbook(inputStream);
       parseWorkbook(context, wb);
       wb.write(out);
     } catch (Exception e) {
@@ -208,11 +209,11 @@ public class ExcelUtils {
    * @param wb
    * @throws ExcelException
    */
-  public static void parseWorkbook(Object context, HSSFWorkbook wb) throws ExcelException {
+  public static void parseWorkbook(Object context, Workbook wb) throws ExcelException {
     try {
       int sheetCount = wb.getNumberOfSheets();
       for (int sheetIndex = 0; sheetIndex < sheetCount; sheetIndex++) {
-        HSSFSheet sheet = wb.getSheetAt(sheetIndex);
+        Sheet sheet = wb.getSheetAt(sheetIndex);
         parseSheet(context, sheet);
       }
     } catch (Exception e) {
@@ -228,9 +229,9 @@ public class ExcelUtils {
    * @param sheetIndex
    * @throws ExcelException
    */
-  public static void parseWorkbook(Object context, HSSFWorkbook wb, int sheetIndex) throws ExcelException {
+  public static void parseWorkbook(Object context, Workbook wb, int sheetIndex) throws ExcelException {
     try {
-      HSSFSheet sheet = wb.getSheetAt(sheetIndex);
+      Sheet sheet = wb.getSheetAt(sheetIndex);
       if (null != sheet) {
         parseSheet(context, sheet);
       }
@@ -257,7 +258,7 @@ public class ExcelUtils {
    * @param sheet
    *          Workbook sheet
    */
-  public static void parseSheet(Object context, HSSFSheet sheet) throws ExcelException {
+  public static void parseSheet(Object context, Sheet sheet) throws ExcelException {
     try {
       ExcelParser.parse(context, sheet, sheet.getFirstRowNum(), sheet.getLastRowNum());
     } catch (Exception e) {

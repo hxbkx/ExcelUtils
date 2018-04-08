@@ -19,12 +19,11 @@ package net.sf.excelutils.tags;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import net.sf.excelutils.ExcelParser;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import net.sf.excelutils.ExcelParser;
 
 /**
  * <p>
@@ -38,7 +37,7 @@ public class SumTag implements ITag {
 
   public static final String KEY_SUM = "#sum";
 
-  public int[] parseTag(Object context, HSSFSheet sheet, HSSFRow curRow, HSSFCell curCell) {
+  public int[] parseTag(Object context, Sheet sheet, Row curRow, Cell curCell) {
     String cellstr = curCell.getStringCellValue();
     if (null == cellstr || "".equals(cellstr)) {
       return new int[] { 0, 0, 0 };
@@ -121,7 +120,6 @@ public class SumTag implements ITag {
       }
     }
     if (!"".equals(hasStr)) {
-      curCell.setEncoding(HSSFWorkbook.ENCODING_UTF_16);
       curCell.setCellValue(hasStr + sum);
     } else {
       curCell.setCellValue(sum);

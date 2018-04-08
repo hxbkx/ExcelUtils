@@ -19,14 +19,14 @@ package net.sf.excelutils.tags;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+
 import net.sf.excelutils.ExcelParser;
 import net.sf.excelutils.ExcelUtils;
 import net.sf.excelutils.WorkbookUtils;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.util.Region;
 
 /**
  * <p>
@@ -42,21 +42,21 @@ public class ForeachTag implements ITag {
 
   public static final String KEY_END = "#end";
 
-  public int[] parseTag(Object context, HSSFSheet sheet, HSSFRow curRow, HSSFCell curCell) {
+  public int[] parseTag(Object context, Sheet sheet, Row curRow, Cell curCell) {
     int forstart = curRow.getRowNum();
     int forend = -1;
     int forCount = 0;
     String foreach = "";
     boolean bFind = false;
     for (int rownum = forstart; rownum <= sheet.getLastRowNum(); rownum++) {
-      HSSFRow row = sheet.getRow(rownum);
+      Row row = sheet.getRow(rownum);
       if (null == row)
         continue;
       for (short colnum = row.getFirstCellNum(); colnum <= row.getLastCellNum(); colnum++) {
-        HSSFCell cell = row.getCell(colnum);
+        Cell cell = row.getCell(colnum);
         if (null == cell)
           continue;
-        if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
           String cellstr = cell.getStringCellValue();
 
           // get the tag instance for the cellstr
@@ -151,8 +151,8 @@ public class ForeachTag implements ITag {
     
     // remove merged region in forstart & forend    
     for (int i=0; i<sheet.getNumMergedRegions(); i++) {
-    	Region r = sheet.getMergedRegionAt(i);
-    	if (r.getRowFrom()>=forstart && r.getRowTo()<=forend) {
+        CellRangeAddress r = sheet.getMergedRegion(i);
+    	if (r.getFirstRow()>=forstart && r.getLastRow()<=forend) {
     		sheet.removeMergedRegion(i);
     		// we have to back up now since we removed one
     		i = i - 1;

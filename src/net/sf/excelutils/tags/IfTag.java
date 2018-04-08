@@ -17,16 +17,15 @@
 
 package net.sf.excelutils.tags;
 
-import net.sf.excelutils.ExcelParser;
-import net.sf.excelutils.WorkbookUtils;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.util.Region;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import net.sf.excelutils.ExcelParser;
+import net.sf.excelutils.WorkbookUtils;
 
 /**
  * <p>
@@ -41,21 +40,21 @@ public class IfTag implements ITag {
   
   public static final String KEY_END = "#end";
 
-  public int[] parseTag(Object context, HSSFSheet sheet, HSSFRow curRow, HSSFCell curCell) {  	
+  public int[] parseTag(Object context, Sheet sheet, Row curRow, Cell curCell) {  	
     int ifstart = curRow.getRowNum();
     int ifend = -1;
     int ifCount = 0;
     String ifstr = "";
     boolean bFind = false;
     for (int rownum = ifstart; rownum <= sheet.getLastRowNum(); rownum++) {
-      HSSFRow row = sheet.getRow(rownum);
+      Row row = sheet.getRow(rownum);
       if (null == row)
         continue;
       for (short colnum = row.getFirstCellNum(); colnum <= row.getLastCellNum(); colnum++) {
-        HSSFCell cell = row.getCell(colnum);
+        Cell cell = row.getCell(colnum);
         if (null == cell)
           continue;
-        if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
           String cellstr = cell.getStringCellValue();
 
           // get the tag instance for the cellstr
@@ -111,8 +110,8 @@ public class IfTag implements ITag {
     	sheet.removeRow(WorkbookUtils.getRow(ifend, sheet));
       // remove merged region in ifstart & ifend    
       for (int i=0; i<sheet.getNumMergedRegions(); i++) {
-      	Region r = sheet.getMergedRegionAt(i);
-      	if (r.getRowFrom()==ifstart && r.getRowTo()==ifstart || r.getRowFrom()==ifend && r.getRowTo()==ifend) {
+          CellRangeAddress r = sheet.getMergedRegion(i);
+      	if (r.getFirstRow()==ifstart && r.getLastRow()==ifstart || r.getFirstRow()==ifend && r.getLastRow()==ifend) {
       		sheet.removeMergedRegion(i);
       		// we have to back up now since we removed one
       		i = i - 1;
@@ -128,8 +127,8 @@ public class IfTag implements ITag {
       }    	
       // remove merged region in ifstart & ifend    
       for (int i=0; i<sheet.getNumMergedRegions(); i++) {
-      	Region r = sheet.getMergedRegionAt(i);
-      	if (r.getRowFrom()>=ifstart && r.getRowTo()<=ifend) {
+          CellRangeAddress r = sheet.getMergedRegion(i);
+      	if (r.getFirstRow()>=ifstart && r.getLastRow()<=ifend) {
       		sheet.removeMergedRegion(i);
       		// we have to back up now since we removed one
       		i = i - 1;
