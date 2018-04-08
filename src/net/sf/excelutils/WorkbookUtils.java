@@ -317,7 +317,8 @@ public class WorkbookUtils {
 				return;
 			toRow.setHeight(fromRow.getHeight());
 			toRow.setHeightInPoints(fromRow.getHeightInPoints());
-			for (int i = fromRow.getFirstCellNum(); i <= fromRow.getLastCellNum() && i >= 0; i++) {
+			int limit = fromRow.getLastCellNum();
+			for (int i = fromRow.getFirstCellNum(); i <= limit && i >= 0; i++) {
 				Cell fromCell = getCell(fromRow, i);
 				Cell toCell = getCell(toRow, i);
 				toCell.setCellStyle(fromCell.getCellStyle());
