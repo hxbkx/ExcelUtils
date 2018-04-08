@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.huangxiongbin</groupId>
 	<artifactId>ExcelUtils</artifactId>
-	<version>1.4.2</version>
+	<version>1.4.3</version>
 	<name>ExcelUtils is a helper to export excel report in java web project. </name>
 	<description>ExcelUtils is a helper to export excel report in java web project.It's like velocity, has own tags, but these tags is written in excel file. </description>
 	<build>
