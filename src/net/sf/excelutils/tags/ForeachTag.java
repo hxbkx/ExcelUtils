@@ -49,10 +49,16 @@ public class ForeachTag implements ITag {
     String foreach = "";
     boolean bFind = false;
     for (int rownum = forstart; rownum <= sheet.getLastRowNum(); rownum++) {
+       if (rownum < 0) {
+        continue;
+       }
       Row row = sheet.getRow(rownum);
       if (null == row)
         continue;
       for (short colnum = row.getFirstCellNum(); colnum <= row.getLastCellNum(); colnum++) {
+        if (colnum < 0) {
+            continue;
+        }
         Cell cell = row.getCell(colnum);
         if (null == cell)
           continue;
@@ -158,9 +164,11 @@ public class ForeachTag implements ITag {
     		i = i - 1;
     	}
     }
-    
-    sheet.shiftRows(forend + 1, sheet.getLastRowNum(), -(forend - forstart + 1), true, true);
-
+    int startRow = forend + 1;
+    int endRow = sheet.getLastRowNum();
+    if(startRow < endRow){
+        sheet.shiftRows(forend + 1, sheet.getLastRowNum(), -(forend - forstart + 1), true, true);
+    }
     return new int[] { ExcelParser.getSkipNum(forstart, forend),
         ExcelParser.getShiftNum(old_forend, forstart), 1 };
   }

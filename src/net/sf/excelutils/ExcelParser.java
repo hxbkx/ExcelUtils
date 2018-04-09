@@ -102,6 +102,9 @@ public class ExcelParser {
       }
 
       for (short colnum = row.getFirstCellNum(); colnum <= row.getLastCellNum(); colnum++) {
+        if(colnum < 0){
+            continue;
+        }
         Cell cell = row.getCell(colnum);
         if (null == cell) {
           continue;

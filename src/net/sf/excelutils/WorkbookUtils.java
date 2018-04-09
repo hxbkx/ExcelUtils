@@ -406,7 +406,7 @@ public class WorkbookUtils {
 				}
 				fromCell.setCellValue("");
 				fromCell.setCellType(Cell.CELL_TYPE_BLANK);
-				Workbook wb = new XSSFWorkbook();
+				Workbook wb = sheet.getWorkbook();
 				CellStyle style = wb.createCellStyle();
 				fromCell.setCellStyle(style);
 			}
