@@ -47,8 +47,8 @@ public class OgnlDynaBean extends LazyDynaBean {
   /**
    * Constructs an instance of OgnlValueStackShadowMap.
    * 
-   * @param valueStack -
-   *          the underlying valuestack
+   * @param valueStack - the underlying valuestack
+   *          
    */
   public OgnlDynaBean(OgnlValueStack valueStack) {
     super(new OgnlDynaClass(valueStack));

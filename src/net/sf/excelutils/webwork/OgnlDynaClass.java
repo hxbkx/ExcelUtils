@@ -38,7 +38,7 @@ public class OgnlDynaClass extends LazyDynaClass {
   /**
    * Constructor
    * 
-   * @param valueStack
+   * @param valueStack value stack
    */
   public OgnlDynaClass(OgnlValueStack valueStack) {
     super();
@@ -49,7 +49,7 @@ public class OgnlDynaClass extends LazyDynaClass {
   /**
    * getDynaProperty
    * 
-   * @param name
+   * @param name property name
    * @return DynaProperty
    */
   public DynaProperty getDynaProperty(String name) {

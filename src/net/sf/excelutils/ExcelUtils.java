@@ -42,15 +42,10 @@ public class ExcelUtils {
 
   /**
    * parse the excel template and output excel to outputStream.
-   * 
-   * @param ctx
-   *          ServletContext
-   * @param config
-   *          Excel Template Name
-   * @param context
-   *          All Data
-   * @param out
-   *          OutputStream
+   * @param ctx ServletContext
+   * @param config Excel Template Name
+   * @param context All Data
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(ServletContext ctx, String config, Object context, OutputStream out) throws ExcelException {
@@ -66,11 +61,11 @@ public class ExcelUtils {
   /**
    * parse the excel template in a sheet and output excel to outputStream.
    * 
-   * @param ctx
-   * @param config
-   * @param sheetIndex
-   * @param context
-   * @param out
+   * @param ctx ServletContext
+   * @param config file name
+   * @param sheetIndex  sheetIndex
+   * @param context data object
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(ServletContext ctx, String config, int sheetIndex, Object context, OutputStream out)
@@ -88,9 +83,9 @@ public class ExcelUtils {
    * parse the excel template and output excel to outputStream in default
    * context.
    * 
-   * @param ctx
-   * @param config
-   * @param out
+   * @param ctx ServletContext
+   * @param config  file name
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(ServletContext ctx, String config, OutputStream out) throws ExcelException {
@@ -105,10 +100,10 @@ public class ExcelUtils {
    * parse the excel template in a sheet and output excel to outputStream in
    * default context.
    * 
-   * @param ctx
-   * @param config
-   * @param sheetIndex
-   * @param out
+   * @param ctx  ServletContext
+   * @param config file name
+   * @param sheetIndex sheetIndex
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(ServletContext ctx, String config, int sheetIndex, OutputStream out) throws ExcelException {
@@ -122,9 +117,9 @@ public class ExcelUtils {
   /**
    * parse excel and export
    * 
-   * @param fileName
-   * @param context
-   * @param out
+   * @param fileName  file name
+   * @param context  data object
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(String fileName, Object context, OutputStream out) throws ExcelException {
@@ -140,9 +135,10 @@ public class ExcelUtils {
   /**
    * parse exel and export
    * 
-   * @param fileName
-   * @param sheetIndex
-   * @param out
+   * @param fileName file name
+   * @param sheetIndex sheetIndex
+   * @param context  data object
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(String fileName, int sheetIndex, Object context, OutputStream out) throws ExcelException {
@@ -158,8 +154,8 @@ public class ExcelUtils {
   /**
    * parse excel and export excel
    * 
-   * @param fileName
-   * @param out
+   * @param fileName file name
+   * @param out  OutputStream
    * @throws ExcelException
    */
   public static void export(String fileName, OutputStream out) throws ExcelException {
@@ -173,9 +169,9 @@ public class ExcelUtils {
   /**
    * parse excel and export excel
    * 
-   * @param fileName
-   * @param sheetIndex
-   * @param out
+   * @param fileName file name
+   * @param sheetIndex sheetIndex
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(String fileName, int sheetIndex, OutputStream out) throws ExcelException {
@@ -187,9 +183,9 @@ public class ExcelUtils {
   }
 
   /**
-   * @param inputStream
-   * @param context
-   * @param out
+   * @param inputStream  file input stream
+   * @param context data object
+   * @param out OutputStream
    * @throws ExcelException
    */
   public static void export(InputStream inputStream, Object context, OutputStream out) throws ExcelException {
@@ -205,8 +201,8 @@ public class ExcelUtils {
   /**
    * parse workbook
    * 
-   * @param context
-   * @param wb
+   * @param context data object
+   * @param wb Workbook
    * @throws ExcelException
    */
   public static void parseWorkbook(Object context, Workbook wb) throws ExcelException {
@@ -224,9 +220,9 @@ public class ExcelUtils {
   /**
    * parse Workbook
    * 
-   * @param context
-   * @param wb
-   * @param sheetIndex
+   * @param context data object
+   * @param wb Workbook
+   * @param sheetIndex sheetIndex
    * @throws ExcelException
    */
   public static void parseWorkbook(Object context, Workbook wb, int sheetIndex) throws ExcelException {
@@ -252,11 +248,8 @@ public class ExcelUtils {
 
   /**
    * parse Excel Template File
-   * 
-   * @param context
-   *          datasource
-   * @param sheet
-   *          Workbook sheet
+   * @param context datasource
+   * @param sheet Workbook sheet
    */
   public static void parseSheet(Object context, Sheet sheet) throws ExcelException {
     try {
@@ -279,9 +272,8 @@ public class ExcelUtils {
   /**
    * add a object to context
    * 
-   * @param context
-   *          must be a DynaBean or Map type
-   * @param value
+   * @param context must be a DynaBean or Map type
+   * @param value data
    */
   public static void addValue(Object context, String key, Object value) {
     if (context instanceof DynaBean) {
@@ -294,8 +286,8 @@ public class ExcelUtils {
   /**
    * add a object to default context
    * 
-   * @param key
-   * @param value
+   * @param key key
+   * @param value value
    */
   public static void addValue(String key, Object value) {
     getContext().set(key, value);
@@ -304,7 +296,7 @@ public class ExcelUtils {
   /**
    * register extended tag package, default is net.sf.excelutils.tags
    * 
-   * @param packageName
+   * @param packageName package name
    */
   public synchronized static void registerTagPackage(String packageName) {
     ExcelParser.tagPackageMap.put(packageName, packageName);
@@ -336,8 +328,8 @@ public class ExcelUtils {
   
   /**
    * can value be show
-   * @param value
-   * @return boolean
+   * @param value data
+   * @return boolean 
    */
   public static boolean isCanShowType(Object value) {
   	if (null == value) return false;

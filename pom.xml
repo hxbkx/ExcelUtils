@@ -20,7 +20,7 @@
 				<version>1.6.3</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>ossrh</serverId>
+					<serverId>sonatype-nexus-staging</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
@@ -85,7 +85,7 @@
             <email>TqxHxb@live.cn</email>
             <organization>github</organization>
 			 <roles>
-				<role>developer</role>
+				<role>major</role>
 			</roles>
         <timezone>+8</timezone>
         </developer>
@@ -141,11 +141,11 @@
 	</dependencies>
 	<distributionManagement>
 		<snapshotRepository>
-			<id>ossrh</id>
+			<id>OSSRH-39043</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<repository>
-			<id>ossrh</id>
+			<id>OSSRH-39043</id>
 			<name>Maven Central Staging Repository</name>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>

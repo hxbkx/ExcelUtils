@@ -45,9 +45,9 @@ public class ExcelResult extends WebWorkResultSupport {
   protected String contentType = "application/vnd.ms-excel";
 
   /**
-   * Execute this result, using the specified template location. <p/>The
+   * Execute this result, using the specified template location. <p>The
    * template location has already been interoplated for any variable
-   * substitutions <p/>this method obtains the excel template and the object
+   * substitutions </p>this method obtains the excel template and the object
    * wrapper from ValueStack.
    */
   protected void doExecute(String location, ActionInvocation invocation) throws Exception {

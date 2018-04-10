@@ -185,9 +185,8 @@ public class ExcelParser {
   /**
    * get the value from context by the expression
    * 
-   * @param expr
-   * @param context
-   *          data object
+   * @param expr expression
+   * @param context data object
    * @return Object the value of the expr
    */
   public static Object getValue(Object context, String expr) {
@@ -204,11 +203,9 @@ public class ExcelParser {
    * parse the expression ${model[${index}]} only one ${} and startWith ${
    * endWith }
    * 
-   * @param context
-   *          data object
-   * @param expr
-   * 
-   * @return the value of the expr
+   * @param context data object
+   * @param expr expression
+   * @return the value of the expression
    */
   public static Object parseExpr(Object context, String expr) {
 
@@ -240,9 +237,9 @@ public class ExcelParser {
   /**
    * parse complex expression ${${}}aaa${}
    * 
-   * @param context
-   * @param str
-   * @return value of the str
+   * @param context data object 
+   * @param str expression
+   * @return value of the expression
    */
   public static Object parseStr(Object context, String str) {
   	return parseStr(context, str, false);
@@ -251,10 +248,10 @@ public class ExcelParser {
   /**
    * parse complex expression ${${}}aaa${}
    * 
-   * @param context
-   * @param str
+   * @param context  data object 
+   * @param str expression
    * @param quot string needs quotation or not
-   * @return value of the str
+   * @return value of the expression
    */
   public static Object parseStr(Object context, String str, boolean quot) {
 
@@ -334,10 +331,9 @@ public class ExcelParser {
   /**
    * parse the cell
    * 
-   * @param context
-   *          data object
-   * @param cell
-   *          excel cell
+   * @param context data object
+   * @param cell excel cell
+   *          
    */
   public static void parseCell(Object context, Sheet sheet, Row row, Cell cell) {
 
@@ -404,8 +400,7 @@ public class ExcelParser {
   /**
    * get properties of the JavaBean
    * 
-   * @param clazz
-   *          JavaBean
+   * @param clazz JavaBean
    * @return fields in the javabean
    */
   public static Field[] getBeanProperties(Class clazz) {
@@ -437,7 +432,7 @@ public class ExcelParser {
   /**
    * get Iterator from the object
    * 
-   * @param collection
+   * @param collection  collection
    * @return Iterator of the object
    */
   public static Iterator getIterator(Object collection) {
@@ -466,23 +461,19 @@ public class ExcelParser {
     return iterator;
   }
 
-  /**
-   * get Skip Num
+  /*
+   * (non-Javadoc)
    * 
-   * @param tagstart
-   * @param tagend
-   * @return skip number
+   * @see net.sf.excelutils.webwork.ExcelLoader#getExcel(java.lang.String)
    */
   public static int getSkipNum(int tagstart, int tagend) {
     return tagend - tagstart;
   }
 
-  /**
-   * get shift Num
+  /*
+   * (non-Javadoc)
    * 
-   * @param old_tagend
-   * @param tagstart
-   * @return shift number
+   * @see net.sf.excelutils.webwork.ExcelLoader#getExcel(java.lang.String)
    */
   public static int getShiftNum(int old_tagend, int tagstart) {
     return tagstart - old_tagend - 1;
