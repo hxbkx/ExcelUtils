@@ -32,8 +32,8 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * <p>
@@ -62,7 +62,7 @@ public class WorkbookUtils {
 		Workbook wb = null;
 		try {
 			in = ctx.getResourceAsStream(config);
-			wb = new XSSFWorkbook(in);
+			wb = WorkbookFactory.create(in);
 		} catch (Exception e) {
 			throw new ExcelException("File" + config + "not found," + e.getMessage());
 		} finally {
@@ -85,7 +85,7 @@ public class WorkbookUtils {
 		Workbook wb = null;
 		try {
 			in = new FileInputStream(fileName);
-			wb = new XSSFWorkbook(in);
+			wb = WorkbookFactory.create(in);
 		} catch (Exception e) {
 			throw new ExcelException("File" + fileName + "not found" + e.getMessage());
 		} finally {
@@ -106,7 +106,7 @@ public class WorkbookUtils {
 	public static Workbook openWorkbook(InputStream in) throws ExcelException {
 		Workbook wb = null;
 		try {
-			wb = new XSSFWorkbook(in);
+			wb = WorkbookFactory.create(in);
 		} catch (Exception e) {
 			throw new ExcelException(e.getMessage());
 		}
@@ -342,7 +342,7 @@ public class WorkbookUtils {
 		}
 
 		// copy merged region
-		List shiftedRegions = new ArrayList();
+		List<CellRangeAddress> shiftedRegions = new ArrayList<CellRangeAddress>();
 		for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
 			CellRangeAddress r = sheet.getMergedRegion(i);
 			if (r.getFirstRow() >= from && r.getLastRow() < from + count) {
@@ -352,7 +352,7 @@ public class WorkbookUtils {
 		}
 		
 		// readd so it doesn't get shifted again
-		Iterator iterator = shiftedRegions.iterator();
+		Iterator<CellRangeAddress> iterator = shiftedRegions.iterator();
 		while (iterator.hasNext()) {
 		    CellRangeAddress region = (CellRangeAddress) iterator.next();
 			sheet.addMergedRegion(region);
@@ -415,7 +415,7 @@ public class WorkbookUtils {
 			for (int cellpos = lastCellNum; cellpos >= beginCell.getColumnIndex(); cellpos--) {
 				Cell fromCell = WorkbookUtils.getCell(curRow, cellpos);
 				
-				List shiftedRegions = new ArrayList();
+				List<CellRangeAddress> shiftedRegions = new ArrayList<CellRangeAddress>();
 				for (int i=0; i<sheet.getNumMergedRegions(); i++) {
 				    CellRangeAddress r = sheet.getMergedRegion(i);
 					if (r.getFirstRow()==curRow.getRowNum() && r.getFirstColumn() == fromCell.getColumnIndex()) {
@@ -430,7 +430,7 @@ public class WorkbookUtils {
 				}
 				
 				// readd so it doesn't get shifted again
-				Iterator iterator = shiftedRegions.iterator();
+				Iterator<CellRangeAddress> iterator = shiftedRegions.iterator();
 				while (iterator.hasNext()) {
 				    CellRangeAddress region = (CellRangeAddress) iterator.next();
 					sheet.addMergedRegion(region);
