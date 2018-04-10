@@ -75,7 +75,7 @@
     </licenses>
     <scm>
         <tag>master</tag>
-        <url>https://github.com/wxisme/bloomfilter.git</url>
+        <url>https://github.com/hxbkx/ExcelUtils.git</url>
         <connection>scm:git:https://github.com/hxbkx/ExcelUtils.git</connection>
         <developerConnection>scm:git:https://github.com/hxbkx/ExcelUtils.git</developerConnection>
     </scm>
@@ -85,7 +85,7 @@
             <email>TqxHxb@live.cn</email>
             <organization>github</organization>
 			 <roles>
-				<role>major</role>
+				<role>Major</role>
 			</roles>
         <timezone>+8</timezone>
         </developer>
@@ -141,13 +141,13 @@
 	</dependencies>
 	<distributionManagement>
 		<snapshotRepository>
-			<id>OSSRH-39043</id>
+			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<repository>
-			<id>OSSRH-39043</id>
+			<id>ossrh</id>
 			<name>Maven Central Staging Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
 </distributionManagement>
 </project>
