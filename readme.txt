@@ -1,4 +1,13 @@
-ExcelUtils README
+		ExcelUtils README
+:::: this source is the updated version of http://excelutils.sourceforge.net
+
+there are some changes:
+
+1¡¢upgrade POI version to 3.14
+
+2¡¢fit xls and xlsx version of excel
+
+
 ==========================
 http://excelutils.sourceforge.net
 
